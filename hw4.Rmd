@@ -1,0 +1,68 @@
+---
+title: "hw4"
+author: "Andre"
+date: "2 11 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(zoo)
+library(dplyr)
+library(lubridate)
+```
+```{r}
+read.csv("C:/Users/Public/hw4/storedata.csv")
+datafil <- read.csv("C:/Users/Public/hw4/storedata.csv")
+datafil$Order_Date=as.Date(datafil$Order_Date , "%Y-%m-%d")
+
+
+```
+
+
+```{r}
+#task 1
+
+region <- datafil %>%
+  filter(Region == c ("Region 1", "Region 9")) %>%
+  filter(Customer_Segment == c("Corporate", "Consumer")) %>%
+  filter(Order_Date >= "2017-10-01", Order_Date <= "2017-12-30")
+
+region1 <- region %>%
+  filter(Region == "Region 1")
+
+salesOctober1 <- region1$Sales [[6]] +region1$Sales [[2]]
+salesNovember1 <- region1$Sales [[1]] + region1$Sales [[5]] + region1$Sales [[8]]
+salesdecember1 <- region1$Sales [[3]] +region1$Sales [[4]] + region1$Sales [[7]]
+
+toatlSales1 <- data_frame(salesOctober1 , salesNovember1 , salesdecember1) %>% 
+  rename("october"=salesOctober1 , "November"= salesNovember1 , "december" = salesdecember1 )
+
+region9 <- region %>%
+  filter(Region == "Region 9")
+
+salesOctober9 <- region9$Sales [[12]] +region9$Sales [[11]] + region9$Sales [[10]] + region9$Sales [[9]] + region9$Sales [[7]] +region9$Sales [[5]] + region9$Sales [[4]] + region9$Sales [[3]] 
+
+salesNovember9 <- region9$Sales [[1]] + region9$Sales [[8]] + region9$Sales [[13]]
+
+salesdecember9 <- region9$Sales [[2]] +region9$Sales [[6]] + region9$Sales [[10]] + region9$Sales [[11]]
+
+toatlSales9 <- data_frame(salesOctober9 , salesNovember9 , salesdecember9) %>% 
+  rename("october"=salesOctober9 , "November"= salesNovember9 , "december" = salesdecember9)
+
+
+```
+```{r}
+paste("for region 1 we have total sales for October, November and December", salesOctober1, salesNovember1 , salesdecember1 ,  "for region 9 vi have total sales for october, november, december", salesOctober9 , salesNovember9 , salesdecember9, " for the following months")
+```
+```{r}
+plotregion
+```
+
+
+
